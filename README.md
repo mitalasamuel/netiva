@@ -1,50 +1,84 @@
-# Welcome to your Expo app 👋
+# School Management App - READ ONLY
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native application that **ONLY READS** from your existing school management MongoDB database. This app does NOT create, update, or delete any data - it simply displays existing student information.
 
-## Get started
+## ⚠️ **READ-ONLY APP**
 
-1. Install dependencies
+This app is designed to:
+- ✅ **READ** existing student data from your MongoDB database
+- ✅ **DISPLAY** student information, attendance, exam results, and notices
+- ✅ **AUTHENTICATE** with existing student IDs
+- ❌ **NOT CREATE** any new data
+- ❌ **NOT UPDATE** any existing data
+- ❌ **NOT DELETE** any data
 
+## Features
+
+- **Student Authentication**: Login with existing student IDs
+- **Student Information**: View personal details, guardian info, contact details
+- **Attendance Records**: View existing attendance history
+- **Exam Results**: View existing exam scores and marks
+- **School Notices**: View existing school announcements
+- **Read-Only Interface**: No editing, creating, or deleting capabilities
+
+## Prerequisites
+
+- Your existing school management MongoDB database
+- Node.js and React Native development environment
+- The backend server running (connects to your existing database)
+
+## Setup
+
+1. **Start Your Backend Server**:
    ```bash
-   npm install
+   cd backend
+   npm run dev
    ```
 
-2. Start the app
-
+2. **Start the React Native App**:
    ```bash
-   npx expo start
+   npm start
    ```
 
-In the output, you'll find options to open the app in a
+3. **Login with Existing Student ID**:
+   - Use any existing student ID from your database
+   - The app will authenticate and display that student's information
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Usage
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+1. **Login**: Enter an existing student ID
+2. **View Information**: Browse through the student's data
+3. **Read Only**: All data is displayed but cannot be modified
 
-## Get a fresh project
+## API Endpoints (Read-Only)
 
-When you're ready, run:
+- `POST /api/login` - Authenticate with existing student ID
+- `GET /api/student/:studentId` - Get existing student information
+- `GET /api/attendance/:studentId` - Get existing attendance records
+- `GET /api/exam-results/:studentId` - Get existing exam results
+- `GET /api/notices` - Get existing school notices
 
-```bash
-npm run reset-project
-```
+## Database Connection
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+The app connects to your existing MongoDB database using:
+- **MongoDB URI**: Your existing connection string
+- **Collections**: Uses your existing students, notices, etc.
+- **Schema**: Matches your existing data structure
 
-## Learn more
+## Security
 
-To learn more about developing your project with Expo, look at the following resources:
+- JWT token-based authentication
+- Read-only access to prevent data modification
+- Secure connection to your existing database
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Important Notes
 
-## Join the community
+- This app **preserves all your existing data**
+- No new data is created or modified
+- Works with your existing student IDs and data structure
+- Designed to be a simple viewer for your school management system
 
-Join our community of developers creating universal apps.
+## Support
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+For issues with your existing data, contact your school administrator. This app only displays what's already in your database.
+# netiva
