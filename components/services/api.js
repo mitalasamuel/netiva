@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Create axios instance with default configuration
 const api = axios.create({
-  baseURL: 'http://192.168.1.73:3000/api', // Updated to your computer's actual IP
+  baseURL: 'http://localhost:3001/api', // Updated to use localhost with correct port
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -111,6 +111,12 @@ export const studentAPI = {
   // Get student subjects (READ ONLY)
   getStudentSubjects: async (studentId) => {
     const response = await api.get(`/student-subjects/${studentId}`);
+    return response.data;
+  },
+
+  // Get student's class details with all students and teachers (READ ONLY)
+  getStudentClassDetails: async (studentId) => {
+    const response = await api.get(`/student-class-details/${studentId}`);
     return response.data;
   },
 

@@ -8,7 +8,7 @@ import TikTokTabBar from '../ui/TikTokTabBar';
 // Screens
 import AcademicRecordsScreen from '../screens/AcademicRecordsScreen';
 import AnnouncementsScreen from '../screens/AnnouncementsScreen';
-
+import ClassScreen from '../screens/ClassScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import LoginScreen from '../screens/LoginScreen';
 import PaymentsScreen from '../screens/PaymentsScreen';
@@ -61,8 +61,8 @@ function MainTabs() {
             case 'Dashboard':
               iconName = focused ? 'home' : 'home-outline';
               break;
-            case 'Results':
-              iconName = focused ? 'book' : 'book';
+            case 'Class':
+              iconName = focused ? 'school' : 'school-outline';
               break;
             case 'Payments':
               iconName = focused ? 'card' : 'card-outline';
@@ -103,10 +103,10 @@ function MainTabs() {
         }}
       />
       <Tab.Screen 
-        name="Results" 
-        component={ResultsScreen}
+        name="Class" 
+        component={ClassScreen}
         options={{
-          title: 'Results',
+          title: 'Class',
         }}
       />
       <Tab.Screen 
@@ -149,9 +149,11 @@ function MainNavigator() {
       <Stack.Screen name="MainTabs" component={MainTabs} />
       <Stack.Screen name="StudentInfo" component={StudentInfoScreen} />
       <Stack.Screen name="AcademicRecords" component={AcademicRecordsScreen} />
-              <Stack.Screen name="Subjects" component={SubjectsScreen} />
-        <Stack.Screen name="Payments" component={PaymentsScreen} />
+      <Stack.Screen name="Subjects" component={SubjectsScreen} />
+      <Stack.Screen name="Class" component={ClassScreen} />
+      <Stack.Screen name="Payments" component={PaymentsScreen} />
       <Stack.Screen name="Timetable" component={TimetableScreen} />
+      <Stack.Screen name="Results" component={ResultsScreen} />
     </Stack.Navigator>
   );
 }

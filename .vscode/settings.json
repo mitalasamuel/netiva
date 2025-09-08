@@ -1,7 +1,12 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit",
-    "source.organizeImports": "explicit",
-    "source.sortMembers": "explicit"
-  }
+    "task.autoDetect": "on",
+    "task.runOnOpen": "Auto Start Backend",
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "files.associations": {
+        "*.js": "javascript"
+    },
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact"
+    },
+    "typescript.preferences.importModuleSpecifier": "relative"
 }

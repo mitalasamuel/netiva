@@ -307,6 +307,148 @@ app.get('/api/classes', authenticateToken, async (req, res) => {
   }
 });
 
+// Get student's class details - New endpoint
+app.get('/api/student-class-details/:studentId', authenticateToken, async (req, res) => {
+  try {
+    const db = await connectToDatabase();
+    const studentId = req.params.studentId;
+    
+    // First get the student to find their class
+    const student = await db.collection('students').findOne({ schoolId: studentId });
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+    
+    if (!student.sclassName) {
+      return res.status(404).json({ message: 'Student not assigned to any class' });
+    }
+    
+    // Get class information
+    const classCollection = db.collection('sclasses');
+    const classInfo = await classCollection.findOne({ _id: student.sclassName });
+    
+    if (!classInfo) {
+      return res.status(404).json({ message: 'Class not found' });
+    }
+    
+    // Get all students in this class
+    const studentsCollection = db.collection('students');
+    const students = await studentsCollection.find({ 
+      sclassName: student.sclassName 
+    }).toArray();
+    
+    // Get all teachers for this class (from subjects)
+    let teachers = [];
+    if (classInfo.subjects && classInfo.subjects.length > 0) {
+      const subjectsCollection = db.collection('subjects');
+      const subjects = await subjectsCollection.find({
+        _id: { $in: classInfo.subjects }
+      }).toArray();
+      
+      // Get unique teachers from subjects
+      const teacherIds = [...new Set(subjects.map(subject => subject.teacher).filter(Boolean))];
+      
+      if (teacherIds.length > 0) {
+        const teachersCollection = db.collection('teachers');
+        teachers = await teachersCollection.find({
+          _id: { $in: teacherIds }
+        }).toArray();
+      }
+    }
+    
+    // Get subjects for this class
+    let subjects = [];
+    if (classInfo.subjects && classInfo.subjects.length > 0) {
+      const subjectsCollection = db.collection('subjects');
+      subjects = await subjectsCollection.find({
+        _id: { $in: classInfo.subjects }
+      }).toArray();
+    }
+    
+    // Combine all information
+    const classDetails = {
+      ...classInfo,
+      students: students,
+      teachers: teachers,
+      subjects: subjects,
+      studentsCount: students.length,
+      teachersCount: teachers.length,
+      subjectsCount: subjects.length
+    };
+    
+    res.json(classDetails);
+  } catch (error) {
+    console.error('Error fetching student class details:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// Get class details with students and teachers - New endpoint
+app.get('/api/class-details/:classId', authenticateToken, async (req, res) => {
+  try {
+    const db = await connectToDatabase();
+    const classId = req.params.classId;
+    
+    // Get class information
+    const classCollection = db.collection('sclasses');
+    const classInfo = await classCollection.findOne({ _id: new ObjectId(classId) });
+    
+    if (!classInfo) {
+      return res.status(404).json({ message: 'Class not found' });
+    }
+    
+    // Get all students in this class
+    const studentsCollection = db.collection('students');
+    const students = await studentsCollection.find({ 
+      sclassName: new ObjectId(classId) 
+    }).toArray();
+    
+    // Get all teachers for this class (from subjects)
+    let teachers = [];
+    if (classInfo.subjects && classInfo.subjects.length > 0) {
+      const subjectsCollection = db.collection('subjects');
+      const subjects = await subjectsCollection.find({
+        _id: { $in: classInfo.subjects }
+      }).toArray();
+      
+      // Get unique teachers from subjects
+      const teacherIds = [...new Set(subjects.map(subject => subject.teacher).filter(Boolean))];
+      
+      if (teacherIds.length > 0) {
+        const teachersCollection = db.collection('teachers');
+        teachers = await teachersCollection.find({
+          _id: { $in: teacherIds }
+        }).toArray();
+      }
+    }
+    
+    // Get subjects for this class
+    let subjects = [];
+    if (classInfo.subjects && classInfo.subjects.length > 0) {
+      const subjectsCollection = db.collection('subjects');
+      subjects = await subjectsCollection.find({
+        _id: { $in: classInfo.subjects }
+      }).toArray();
+    }
+    
+    // Combine all information
+    const classDetails = {
+      ...classInfo,
+      students: students,
+      teachers: teachers,
+      subjects: subjects,
+      studentsCount: students.length,
+      teachersCount: teachers.length,
+      subjectsCount: subjects.length
+    };
+    
+    res.json(classDetails);
+  } catch (error) {
+    console.error('Error fetching class details:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 // Get subjects - Updated for original schema
 app.get('/api/subjects', authenticateToken, async (req, res) => {
   try {
