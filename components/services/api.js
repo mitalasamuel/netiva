@@ -1,9 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { Platform } from 'react-native';
+
+// Resolve API base URL per platform
+const API_PORT = 3000;
+const BASE_URL = Platform.OS === 'android'
+  ? `http://10.0.2.2:${API_PORT}/api` // Android emulator loopback to host
+  : `http://localhost:${API_PORT}/api`;
 
 // Create axios instance with default configuration
 const api = axios.create({
-  baseURL: 'http://localhost:3001/api', // Updated to use localhost with correct port
+  baseURL: BASE_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -47,7 +54,7 @@ export const authAPI = {
   // Login with existing student ID
   login: async (studentId) => {
     console.log('🌐 API: Making login request for student ID:', studentId);
-    console.log('🌐 API: Request URL:', `http://192.168.1.73:3000/api/login`);
+    console.log('🌐 API: Request URL:', `${BASE_URL}/login`);
     console.log('🌐 API: Request payload:', { userId: studentId, role: 'Student' });
     
     try {
